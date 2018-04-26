@@ -1,0 +1,30 @@
+{% extends 'pkw/szkielet.html' %}
+
+
+{% block nawigacja %}
+    <li> POLSKA</li>
+{% endblock %}
+
+
+{% block rejon %}
+    Polska
+{% endblock %}
+
+
+{% block kraj_wykres %}
+    <h3>
+        Frekwencja (wciśnij wybrane województwo, aby przejść do strony wybranego obszaru)
+    </h3>
+    <div id="regions_div" style="width: 1500px; height: 800px; margin: 50px;"></div>
+    <hr>
+{% endblock %}
+
+
+{% block podjednostki_linki %}
+    <ul>
+        {% for link in lista_linkow %}
+            <li><a href="{% url 'pkw:woj' link %}">{{ link }} </a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

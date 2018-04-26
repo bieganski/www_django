@@ -1,0 +1,21 @@
+{% extends 'pkw/szkielet.html' %}
+
+
+{% block nawigacja %}
+    <li><a href="{% url 'pkw:kraj' %}">POLSKA</a>&emsp;</li>
+    <li> {{ wojewodztwo }}</li>
+{% endblock %}
+
+
+{% block rejon %}
+    WOJEWÓDZTWO {{ wojewodztwo }}
+{% endblock %}
+
+
+{% block podjednostki_linki %}
+    <ul>
+        {% for link in lista_linkow %}
+            <li><a href="{% url 'pkw:okreg' wojewodztwo link.nr %}">{{ link.nazwa }} </a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

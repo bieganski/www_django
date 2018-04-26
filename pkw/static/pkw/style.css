@@ -1,0 +1,97 @@
+body {
+    background-color: crimson;
+    margin: 0;
+    position: center;
+    font-size: 30px;
+}
+
+.section_zawartosc {
+    margin: 20px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#flaga {
+    background: url('images/flaga.png') no-repeat left;
+    background-size: contain;
+    padding: 0;
+    margin: 0 20px;
+    width: 400px;
+    height: 300px;
+}
+
+.bodywrapper > header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bodywrapper {
+    margin: auto;
+    background-color: white;
+    max-width: 80%;
+    min-height: 100%;
+    padding: 50px;
+}
+
+a:visited {
+    text-decoration: none;
+    decoration: none;
+}
+
+nav {
+    border-bottom: black;
+    border-top: black;
+}
+
+nav ul {
+    font-size: 30px;
+    display: flex;
+    list-style-type: none;
+}
+
+nav ul li a:hover {
+    text-decoration: none;
+    color: crimson;
+    font-weight: bold;
+}
+
+h1 {
+    margin: 4px;
+    color: crimson;
+    font-size: 80px;
+}
+
+h2 {
+    color: rebeccapurple;
+    font-size: 50px;
+    margin: 4px;
+}
+
+h3 {
+    display: inline;
+    font-size: 35px;
+    margin: 4px;
+}
+
+footer {
+    text-align: right;
+}
+
+@media all and (max-width: 1300px) {
+    #piechart {
+        visibility: hidden;
+    }
+}
+
+@media all and (max-width: 1300px) {
+    nav ul {
+        flex-direction: column;
+    }
+}
+
+@media all and (max-width: 1300px) {
+    .section_zawartosc {
+        flex-direction: column;
+    }
+}

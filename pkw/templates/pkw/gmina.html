@@ -1,0 +1,20 @@
+{% extends 'pkw/szkielet.html' %}
+
+
+{% block nawigacja%}
+    <li><a href="{% url 'pkw:kraj' %}"> POLSKA </a>&emsp;</li>
+    <li><a href="{% url 'pkw:woj' wojewodztwo %}"> {{ wojewodztwo }}</a>&emsp;</li>
+    <li><a href="{% url 'pkw:okreg' wojewodztwo okreg %}"> OKRĘG {{ okreg }}</a>&emsp;</li>
+    <li>{{ gmina }}</li>
+{% endblock %}
+
+
+{% block rejon %}
+    Gmina {{ gmina }}
+{% endblock %}
+
+
+{% block podjednostki_linki %}
+    &nbsp;&nbsp; brak
+{% endblock %}
+

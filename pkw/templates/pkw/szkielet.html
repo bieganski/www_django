@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'pkw/style.css' %}"/>
+
+    <title>
+        PREZYDENT2000
+    </title>
+
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    {# -----------------------   WYKRES WOJEWODZTW DLA KRAJU   ----------------------- #}
+
+    <script>
+
+        google.charts.load('current', {
+            'packages': ['geochart'],
+            'mapsApiKey': 'AIzaSyDS5_LPsrc7TqI6sBaKa11PLk1muGh1drk'
+        });
+
+        google.charts.setOnLoadCallback(drawRegionsMap);
+
+        function drawRegionsMap() {
+            var data = google.visualization.arrayToDataTable([
+                ['Country', 'Frekwencja'],
+                {% for woj, ile_waznych in frekwencja %}
+                    ['{{ woj }}', {{ ile_waznych }}],
+                {% endfor %}
+            ]);
+
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1]);
+
+            var options = {
+                region: 'PL',
+                resolution: 'provinces',
+                backgroundColor: 'white',
+                datalessRegionColor: 'white',
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+            function selectHandler() {
+                var selectedItem = chart.getSelection()[0];
+                if (selectedItem) {
+                    window.location.href = '../' + data.getValue(selectedItem.row, 0).toString();
+                    // window.location.replace
+                }
+            }
+
+            google.visualization.events.addListener(chart, 'select', selectHandler);
+            chart.draw(view, options);
+        }
+    </script>
+
+    {# -------------------------   WYKRES WYNIKOW KAZDEGO KANDYDATA   ---------------------- #}
+
+    <script>
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Kandydat', 'Procentowy wynik'],
+                {% for kand in stat_kandydatow %}
+                    ['{{ kand.pelna_godnosc }}', {{ kand.procenty }}],
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Wyniki kandydatów w rejonie:'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+<div class="bodywrapper">
+    <header>
+
+        <div id="flaga">
+        </div>
+
+        <h1>Wybory Prezydenckie Rzeczypospolitej Polskiej 2000</h1>
+
+    </header>
+
+    <article>
+        <nav>
+            <ul>
+                <li style="font-weight: bold;color: crimson">JESTEŚ TUTAJ:&emsp;</li>
+                {% block nawigacja %}
+                {% endblock %}
+            </ul>
+        </nav>
+        <section> {# --------- STATYSTYKI OGÓLNE I WYKRES KOŁOWY Z WYNIKAMI -------- #}
+
+            <header>
+                <h2>{% block rejon %}{% endblock %}: Ogólne statystyki</h2>
+            </header>
+
+            {# -- MAPA WOJEWODZTW - TYLKO DLA KRAJU -- #}
+            {% block kraj_wykres %}
+            {% endblock %}
+            <div class="section_zawartosc">
+
+
+                {% block statystyki_ogolne %}
+
+                    <table style="font-size: 30px;text-align: left">
+                        <tr>
+                            <th>Uprawnieni:</th>
+                            <td>{{ stat_ogolne.uprawnieni }}</td>
+                        </tr>
+                        <tr>
+                            <th>Karty wydane:</th>
+                            <td>{{ stat_ogolne.wydane }}</td>
+                        </tr>
+                        <tr>
+                            <th>Karty oddane:</th>
+                            <td>{{ stat_ogolne.oddane }}</td>
+                        </tr>
+                        <tr>
+                            <th>Głosy ważne:</th>
+                            <td>{{ stat_ogolne.wazne }}</td>
+                        </tr>
+                        <tr>
+                            <th>Głosy nieważne:</th>
+                            <td>{{ stat_ogolne.niewazne }}</td>
+                        </tr>
+                    </table>
+                {% endblock %}
+
+                {% block wykres_wynikow %}
+                    <div id="piechart" style="width: 900px; height: 500px;"></div>
+                {% endblock %}
+            </div>
+        </section>
+
+        <section> {# --------- TABELKA Z DOKLADNYMI WYNIKAMI I LNKI DO PODREJNÓW ------- #}
+            <header>
+                <h2>Wyniki wszystkich kandydatów w rejonie</h2>
+            </header>
+            <div class="section_zawartosc">
+                {% block statystyki_kandydatow %}
+
+                    <table style="font-size: 30px;text-align: left">
+                        <tr>
+                            <th>Kandydat</th>
+                            <th>Suma głosów</th>
+                            <th>%</th>
+                        </tr>
+                        {% for kand in stat_kandydatow %}
+                            <tr>
+                                <td>{{ kand.pelna_godnosc }}</td>
+                                <td>{{ kand.suma }}</td>
+                                <td>{{ kand.procenty }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endblock %}
+
+                <h3>Linki do podrejonów</h3>
+                {% block podjednostki_linki %}
+                {% endblock %}
+            </div>
+        </section>
+    </article>
+
+
+    <footer>
+        <p>&copy; Mateusz Biegański, Aplikacje WWW 2017</p>
+    </footer>
+</div>
+
+
+{# BODYWRAPPER DIV #}
+
+</body>
+</html>
